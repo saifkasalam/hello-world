@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<!-- saved from url=(0053)https://www.tcsion.com/dotcom/TCSSMB/Login/login.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="shortcut icon" type="image/png" href="https://www.tcsion.com/dotcom/TCSSMB/Login/images/Favicon1.png?v=0.9">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login</title>
+    <link type="text/css" href="./Login_files/main.css" rel="stylesheet">
+    <link rel="stylesheet" href="./Login_files/font-awesome.min.css" type="text/css">
+    <script src="./Login_files/jquery-1.11.2.min.js"></script>
+	<style>
+	 label.required { color: #fff;
+        float: right;
+    }
+    label a {
+    color: #fff;
+    font-size: 12px;
+	</style>
+	
+    <script>
+        $(document).ready(function(){
+		
+		
+		if(document.referrer.indexOf("logout")==-1 && document.referrer.indexOf("/SMBPortal/")==-1){
+		jQuery.ajax({
+        type: "POST",
+        url: "/SMBPortal/deviceExist?loginType=0",
+       async:false,
+dataType: 'text',
+        complete: function(response) {
+            console.log("response:::"+response.responseText);
+			if(response.responseText=='true')
+			{
+			window.open("/SMBPortal/Login?LoginType=0","_self");
+			}
+        },
+error: function (xhr, error) {
+      console.debug("error"+xhr); 
+      console.debug(error);
+    }
+    });
+	
+	}
+            var vWidth = $(window).width(); 
+            if(vWidth >=1020 && vWidth <=1920) {
+                var c_ht = ($('.container_ht').height())-(380);
+                // alert(c_ht);
+                //var login_ht = $('.posRelative').height();
+                //var btm_ht = $('.grey-strip').height();
+                //$('.n-content').css("margin-top",Math.round(c_ht/2));
+            }
+        });
+		
+function forgotPasswordRedirect(){
+	//var location = '/dotcom/PasswordPolicy/forget_pwd.jsp';
+	var lang = $("#language").val();
+	var EncryptedLang=btoa("lang="+lang);
+	var location = "/dotcom/PasswordPolicy/forget_pwd.jsp?"+EncryptedLang;
+	
+	document.login.action = location;
+	document.login.submit();
+}
+
+function clearText(thefield){
+if (thefield.defaultValue==thefield.value)
+thefield.value = ""
+}
+
+function showlabelusername(thefield){
+if (thefield.value=="")
+thefield.value ="Username"
+}
+
+function showlabelpassword(thefield){
+if (thefield.value=="")
+thefield.value ="Password"
+}
+function loginform()
+{
+   //alert("inside loginform()");
+	//var divdata ="<div style=\"background: none repeat scroll 0% 0% rgb(242, 108,79); height: 22px; margin-top: 2px; color: rgb(255, 255, 255); line-height:22px; font-size: 12px; padding-left: 5px;\">";
+	var lang = $("#language").val();
+	var validateUserName = "Username field is empty";
+	var validatePassword = "Password field is empty";
+	//var jsonstr = [{"one":1,"two":2,"three":3}];
+	//alert("jsonstr : "+jsonstr[0].one);
+	if(lang != "English")
+	{
+		validateUserName = $(".n-login-wrap a").attr('jsonAttrUsrname');
+		validatePassword = $(".n-login-wrap a").attr('jsonAttrpswrd');
+	}
+	var username = document.getElementById("accountname").value;
+	var password = encryptText(document.getElementById("password").value);
+	if (username == null || username == "")
+	{
+		document.getElementById("accountname").focus();
+		//divdata+= "User Id field is empty!</div>";
+		//alert("Username is empty");
+		alert(validateUserName);
+		//jQuery("#error_msg").html(divdata).show();
+		return;
+	}
+	else if (password == null || password == "")
+	{
+		document.getElementById("password").focus();
+		//divdata+= "Password field is empty!</div>";
+		//alert("Password field is empty!");
+		alert(validatePassword);
+		//jQuery("#error_msg").html(divdata).show();
+		return;
+	}
+	else
+		document.login.submit();	
+}		
+window.onload = function(){
+changeLanguage();
+}	
+$(document).ready(function(){
+
+ 
+});
+function encryptText(password){
+					var text=password;
+					var saltStringKey="fdledje4p2aga6gtfgq2ce";
+
+					if(text!=""){
+					text=text+saltStringKey;
+					text=encode(text,4);
+					var encrypted=text.substring(text.length-2,text.length)+text.substring(2,text.length-2)+text.substring(0,2);
+                    text=encrypted;
+                    jQuery("#password").val(text);
+                    }
+                    return text;
+                    }
+        function encode ( s, k){
+        			var newS = "";
+                    for ( i = 0; i < s.length; ++i) {
+                    var val = s[i].charCodeAt()+k;
+                    var dup = k;
+                    if (false) {
+                     newS += (96 + k);
+                     	}else{
+                     	newS += String.fromCharCode(val);
+                        }
+                        k = dup;
+                    }
+                    return newS;
+                    }
+        
+ function nexarc()
+        {  
+           var http_request = getAjaxRequest();	
+           var url = "/dotcom/NexarcUrlFetcher.do";
+        	http_request.open('POST', url, false);   	                    	                
+        	http_request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        	http_request.send(null);
+
+        	if(http_request.readyState == 4)
+        	{		
+        		if (http_request.status == 200)
+        		{
+        			
+        			var serverResponse=http_request.responseText;
+        			var finalurl= serverResponse+"/iONAppsHub/TBHSSO?et=qDi5KGhCYJI7f5jsGX+/bF9HXqm4BNGzdJn6uawBPYTa/Mm0ctVVxCRaKq7lfNa8gxO05U2qJO0hcOxzyUmQ+5upJVZJAiMfz4RUtDRc8F+R1OPaigDkqQDcthyJN3Jq&lt=0";	
+        			 }
+        			 }
+        	  window.open(finalurl, '', 'scrollbars=yes,location=no,menuBar=no,resizable=yes,status=no,toolbar=no,width=700,height=500'); try {if (w.blur) w.focus();}catch(ignore){}; return false;
+
+        		}
+        		
+        function getAjaxRequest() 
+        {
+        		var http_request;	
+        		if (window.XMLHttpRequest) { // Mozilla, Safari,...
+        			http_request = new XMLHttpRequest();
+        			if (http_request.overrideMimeType) {
+        				http_request.overrideMimeType('text/xml');	        
+        			}
+        		} else if (window.ActiveXObject){ // IE
+        			try {
+        				http_request = new  ActiveXObject("Microsoft.XMLHTTP");
+        			} catch (e) {
+        				try {
+        				} catch (e) {
+        				}
+        			}
+        		}	
+        		if (!http_request) {
+        			return false;
+        		}
+        	return http_request;
+        }	                                  
+          
+function changeLanguage()
+{
+	var lang = $("#language").val();
+	//alert("lang :"+lang);
+	
+	
+		jQuery.ajax({
+			type : "post",
+			url : "/dotcom/ForgotPswrdInternationalization.do",
+			dataType: "json",
+			//dataType: "text",
+			data : {"language" : lang},
+			success : function(json)
+			{
+				//alert("login page :: "+json);
+				/*$(".header-info span:eq(1) span b").text(json['SMSiONTo']);
+				$(".header-info span:eq(2) span a").text(json['EmailUs']);
+				$(".header-info span:eq(3) span a").text(json['VisitOurPortal']);
+				$(".header-info span:eq(4) span a").text(json['HelpCentral']);*/
+				$(".header-info .header").find(".orange b").each(function(index)
+                                               {
+												 if(index == 1)
+                                                 $(this).text(json['SMSiONTo']);
+                                               });
+				$(".header-info .header").find(".blue a").each(function(index)
+                                               {
+												 if(index == 0)
+													$(this).text(json['EmailUs']);
+												 if(index == 1)
+													$(this).text(json['VisitOurPortal']);
+												 if(index == 2)
+													$(this).text(json['HelpCentral']);
+                                               });
+				$(".headerdd").text(json['Language']);
+				$(".n-input-wrap span:first").text(json['Welcome']);
+				$(".n-input-wrap input").attr('placeHolder',json['Username']);
+				$(".n-input-wrap2 input").attr('placeHolder',json['Password']);
+				$(".n-login-wrap a").text(json['Login']);
+				$(".n-login-wrap a").attr('jsonAttr',json);
+				$(".n-login-wrap a").attr('jsonAttrUsrname',json['UsernameFieldEmpty']);
+				$(".n-login-wrap a").attr('jsonAttrpswrd',json['PasswordFieldEmpty']);
+				$(".n-forget-text").text(json['TroubleLoggingIn']);
+				$(".n-forget-username").text(json['Forgotusername']);
+				$(".login-using").text(json['LoginUsing'])
+				$(".faceunlck").children()[0].text=json['FaceUnlock'];
+				$(".login_container_checkbox")[0].firstChild.data=json['Keepmesignedin'];
+				$(".disclaimer_flyout")[0].firstChild.data=json['Keepmesignedininfo'];
+				document.title=json['Login'];
+				$('.sub-footer .sub-footer-content .greystrip-text ').find('.n-small-text').each(function(index,value){
+					if(index==0)
+					//console.log($(this).text("aaaaaaaaa"));
+					$(this).text(json['ActiveUsers']);
+					if(index==1)
+					$(this).text(json['SolutionCapabilities']);
+					if(index==2)
+					$(this).text(json['Modules']);
+				});
+				$(".n-small-text").css("font-size","0.7em");
+			}
+		});
+		if(lang != "English")
+	{
+	$(".login_container_checkbox").css("font-size","9px")
+	}
+}
+
+	
+    </script>
+</head>
+<body>
+    <div class="n-pageHeader-grey">
+        <div class="title"><img src="./Login_files/TATA-logo-left.png" alt="Tata Logo"></div>
+        <div class="title_img"><img src="./Login_files/TATA-logo-right.png" alt="Tata Logo"></div>
+    </div>
+    <div class="container_ht">
+        <div class="n-pageHeader">
+            <div class="n-container">
+                <div class="n-left-panel">
+                    <a href="https://www.tcsion.com/dotcom/TCSSMB/index.html">
+					<!---Added by 1831047 -->
+                        <img src="./Login_files/TCS-iON-Logo-RGB-Color.png" alt="TCSiON Logo" style="width: 150px;">
+                    </a>
+                </div>
+                <div class="n-right-panel">
+                    <div class="clear"></div>
+                    <div class="header-info">
+      <span class="header">  <i class="fa fa-phone fa-new"></i> <span class="orange gaph"><a href="tel:18002096030"><b>1800 209 6030</b></a></span></span>
+          <span class="n-divider gaph">|</span>
+		  <span class="header">  <i class="fa fa-sms fa-new"></i> <span class="orange gaph"><b>SMS: 'TCSiON' to 56161 </b></span></span>
+          <span class="n-divider gaph">|</span>
+         <span class="header"> <i class="fa fa-envelope fa-new gapb"></i><span class="blue gaph"><a href="mailto:ion.servicedesk@tcs.com">Email Us</a></span></span>
+         <span class="n-divider gaph">|</span>
+         <span class="header"> <i class="fa fa-laptop fa-new gapb"></i><span class="blue gaph"><a target="blank" href="https://www.tcsion.com/dotcom/TCSSMB/index.html">Visit our portal</a></span></span>
+         <span class="n-divider gaph">|</span>
+         <span class="header"> <i class="fa fa-exclamation-circle fa-new gapb"></i><span class="blue gaph"><a target="blank" href="https://www.tcsion.com/dotcom/iONHelp/index.html">Help Central</a></span></span>
+		 
+		 <span class="n-divider gaph">|</span>
+		 <span class="lang_Div" style="color: #6BA8E5;"><span class="headerdd">Language:</span>
+				<select id="language" onchange="changeLanguage()" style="cursor: pointer;" name="options">
+					<option value="English">English</option>
+					<option value="Japanese">Japanese</option>
+					<option value="Bahasa">Bahasa</option>
+					<option value="Spanish">Spanish</option>
+					<option value="Portuguese">Portuguese</option>
+					
+				</select>
+           </span>
+			
+         <div>
+         </div></div>
+                </div>
+            </div>
+        </div>
+        <div class="n-content n-container">
+            <div class="clear"></div>    
+            <div class="n-left-content">
+                <img src="./Login_files/ion-login-banner.jpg" alt="Login Banner">
+                <p class="n-left-para1">
+                    Experience the <span class="orange">Best</span>
+                </p>
+                <p class="n-left-para2">
+                    with all new <span class="blue-back">TCS iON</span>
+                </p>    
+            </div>    
+            <div class="posRelative">    
+                <div class="n-right-content">
+                    <form action="https://www.tcsion.com/SMBPortal/Login" onsubmit="return validate_form(this)" method="POST" name="login" autocomplete="off">
+                        <div id="error_msg" style="display:none"></div>      
+<script>
+		  var webURL=document.location.href;
+		  var invalid = webURL.indexOf("invalid");
+		  
+		  if (invalid!= -1)
+		  {
+			var errorMsg = webURL.substr(webURL.indexOf("errmsg")+7);
+			errorMsg = decodeURIComponent(errorMsg);
+
+			if(errorMsg == "The User Id has been disabled."){
+			errorMsg = "The User Id has been disabled" ;
+			}
+			else{
+			errorMsg = "Invalid User Id/Password" ; 
+			}
+
+
+			document.write('<div style="background: none repeat scroll 0% 0% rgb(242, 108,79); height: 22px; margin-top: 0px; color: rgb(255, 255, 255); line-height:22px; font-size: 12px; padding-left: 5px;border-top-right-radius: 10px;border-top-left-radius: 10px;">');
+			document.write(errorMsg);
+			document.write('</div>');
+			$("alert_message").css("display","none");
+
+		  }
+		 
+		
+		  </script>
+						
+                        <div class="n-input-wrap">
+						     <span>Welcome</span>
+							<label class="required"><a href="https://www.tcsion.com/SMBPortal/forgotusername?loginType=1" class="n-forget-username" onclick="forgetUname()">Forgot Username?</a></label>
+                            <input type="text" value="" placeholder="Username" name="accountname" id="accountname" class="n-text-box" onfocus="this.removeAttribute(&#39;readonly&#39;)" autocomplete="off" style="margin-top: 8px;" autofocus="" tabindex="1">
+                        </div>
+                        <div class="n-input-wrap2">
+						<label class="required"><a href="javascript:forgotPasswordRedirect();" class="n-forget-text" jsonattr="[object Object]" jsonattrusrname="Username field is empty" jsonattrpswrd="Password field is empty">Forgot Password?</a></label>
+                            <input type="password" value="" placeholder="Password" name="password" id="password" class="n-text-box" onkeydown="if(event.keyCode == 13){loginform()}" readonly="" onfocus="this.removeAttribute(&#39;readonly&#39;)" data-password-autocomplete="off" autocomplete="new-password" tabindex="2">
+                        </div>
+						<div class="checkbox_container" style="margin-left: 0px;">                       
+                          <label class="login_container_checkbox">Keep Me Signed In<input type="checkbox" id="isRememberMe" name="remember_Me" value="1">
+                             <span class="checkmark"></span>
+                          </label>
+                          <div class="disclaimer_wrapper">
+                            <div class="checkbox_infoIcon" title="Help"></div>
+                            <div class="disclaimer_flyout" style="/* display: block; */">Kindly Ensure to only enable on your personal device.There is a potential risk of enabling this feature on a common device which is used by others also.<span class="close_flyout" title="Close"></span>
+                            </div>
+                          </div>
+                       </div>
+                        <div class="n-login-wrap">
+                            <a class="n-login" href="javascript:loginform();" jsonattr="[object Object]" jsonattrusrname="Username field is empty" jsonattrpswrd="Password field is empty" tabindex="3">Login</a>
+                            <!--<a href="javascript:forgotPasswordRedirect();" class="n-forget-text" jsonattr="[object Object]" jsonattrusrname="Username field is empty" jsonattrpswrd="Password field is empty">Forgot Password?</a>-->
+                        </div>
+                        <input type="hidden" name="orgFolder" id="orgFolder" value="TCSSMB">
+                        <input type="hidden" name="loginType" id="loginType" value="0">
+                        <input type="hidden" name="isPasswordEncrypted" id="isPasswordEncrypted" value="1">
+                    </form>
+                </div>
+                <div class="login-social">
+                    <span class="login-using">Login Using</span>
+                    <a href="https://www.tcsion.com/dotcom/TCSSMB/Login/login.html#" class="facebk" title="Facebook" onclick="var w = window.open(&#39;/SMBPortal/OauthRedirect?otype=facebook&amp;ostate=loginpage&amp;olt=0&#39;, &#39;&#39;, &#39;scrollbars=yes,location=no,menuBar=no,resizable=yes,status=no,toolbar=no,width=700,height=500&#39;); try {if (w.blur) w.focus();}catch(ignore){}; return false;"><i class="fa fa-facebook loginSocIcon_NewUi"></i></a>
+                    <a href="https://www.tcsion.com/dotcom/TCSSMB/Login/login.html#" class="linkdin" title="Linkedin" onclick="var w = window.open(&#39;/SMBPortal/OauthRedirect?otype=linkedin&amp;ostate=loginpage&amp;olt=0&#39;, &#39;&#39;, &#39;scrollbars=yes,location=no,menuBar=no,resizable=yes,status=no,toolbar=no,width=700,height=500&#39;); try {if (w.blur) w.focus();}catch(ignore){}; return false;"><i class="fa fa-linkedin loginSocIcon_NewUi"></i></a>
+                    <a href="https://www.tcsion.com/dotcom/TCSSMB/Login/login.html#" class="google" title="Google Plus" onclick="var w = window.open(&#39;/SMBPortal/OauthRedirect?otype=google&amp;ostate=loginpage&amp;olt=0&#39;, &#39;&#39;, &#39;scrollbars=yes,location=no,menuBar=no,resizable=yes,status=no,toolbar=no,width=700,height=500&#39;); try {if (w.blur) w.focus();}catch(ignore){}; return false;"><i class="gplusIcon_NewUi loginSocIcon_NewUi"></i></a>
+                   <a href="https://www.tcsion.com/dotcom/TCSSMB/Login/login.html#" class="nexarc" title="Tata nexarc" onclick="nexarc()"><i class="nexarcIcon_NewUi loginNexarcSocIcon_NewUi"></i></a>
+ 
+                     <span href="#" class="faceunlck" style="cursor: pointer;"> <a href="https://www.tcsion.com/SMBPortal/FaceUnlock?flt=0" style="text-decoration: none;color: #fff;cursor: pointer;">Face Unlock</a>
+					 <a href="https://www.tcsion.com/SMBPortal/FaceUnlockHelp?flt=0&amp;helpParam=faceUnlockHelp"><span class="infoIcon_NewUi"></span></a>
+					</span>
+                </div>  
+            </div>               
+            <div class="clear"></div>
+        </div>            
+        <div class="clear">&nbsp;</div>
+        <div class="grey-strip">    
+            <div class="sub-footer">    
+                <div class="sub-footer-content">    
+                    <div class="div1">     
+                        <div class="n-hand-img gap"></div>
+                        <div class="greystrip-text">
+                            <span class="n-small-text" style="font-size: 0.7em;">Active Users</span><br>
+                            <span class="orange n-bold-text">12,72,100</span>
+                        </div>
+                    </div>    
+                    <div class="div2">
+                        <div class="n-sol-img gap"></div>
+                        <div class="greystrip-text ">
+                            <span class="n-small-text" style="font-size: 0.7em;">Solution Capabilities</span><br>
+                            <span class="orange n-bold-text">18,020</span>
+                        </div>
+                    </div>
+                    <div class="div3">
+                        <div class="n-module-img gap"></div>
+                        <div class="greystrip-text">
+                            <span class="n-small-text" style="font-size: 0.7em;">Modules</span><br>
+                            <span class="orange n-bold-text">150</span>
+                        </div>
+                    </div>
+                    <div class="clear"></div>
+                </div> 
+            </div>    
+            <div class="clear footer-text"> © <span id="year" style="font-size:1em; vertical-align:0px;">2022</span> Tata Consultancy Services. All Rights Reserved.</div>     
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div class="n-footer">
+        <div class="footer-content">
+            <a title="Facebook" href="https://www.facebook.com/TCSiONGlobal/" target="_blank">
+                <span class="circle FB"><i class="fa fa-facebook whitetext"></i></span>
+            </a>
+            <a title="Twitter" href="https://twitter.com/tcs_ion" target="_blank">
+                <span class="circle"><i class="fa fa-twitter whitetext"></i></span>
+            </a>
+            <a title="LinkedIn" href="https://www.linkedin.com/company/tcs-ion" target="_blank">
+                <span class="circle"><i class="fa fa-linkedin whitetext"></i></span>
+            </a>
+            <a title="Youtube" href="https://www.youtube.com/c/tcsion" target="_blank">
+                <span class="circle"><i class="fa fa-youtube whitetext"></i></span>
+            </a>
+            <a title="WordPress" href="https://tcsionblog.wordpress.com/" target="_blank">
+                <span class="circle"><i class="fa fa-wordpress whitetext"></i></span>
+            </a>
+        </div>      
+        <div class="n-footer-para">
+            <span> © </span> 
+            <span id="year1" style="font-size:1em; vertical-align:0px;">2022</span> 
+            Tata Consultancy Services. All Rights Reserved.
+			
+        </div>
+    </div>
+	<script>
+	$("#form").on('submit', function() {
+            // to each unchecked checkbox
+console.log("insidesssss")
+            $(this + 'input[type=checkbox]:not(:checked)').each(function () {
+                // set value 0 and check it
+                $(this).val(0);
+            });
+        })
+	  jQuery('.checkbox_infoIcon').click(function(){
+		  jQuery('.disclaimer_flyout').show();
+      });
+	  jQuery('.close_flyout').click(function(){
+		  jQuery('.disclaimer_flyout').hide();
+      })
+	$(document).on('click', function (e) {
+    if ($(e.target).closest(".checkbox_container").length === 0) {
+        $(".disclaimer_flyout").hide();
+    }
+});
+      jQuery('input[type="checkbox"]').click(function(){
+          if(jQuery(this).prop("checked") == true){
+        	  jQuery('.disclaimer_flyout').show();
+          }
+          else if(jQuery(this).prop("checked") == false){
+        	  jQuery('.disclaimer_flyout').hide();
+          }
+      });
+	  jQuery('.checkbox_infoIcon').off('click').click(function(){
+		  if(jQuery('.disclaimer_flyout').css("display")== "none"){
+        	  jQuery('.disclaimer_flyout').show();
+          }
+          else {
+        	  jQuery('.disclaimer_flyout').hide();
+          }
+      });
+	document.getElementById("year").innerHTML = new Date().getFullYear();
+	document.getElementById("year1").innerHTML = new Date().getFullYear();
+	</script>
+
+</body></html>
